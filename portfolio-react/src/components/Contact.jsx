@@ -5,89 +5,86 @@ const Contact = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
+        subject: '',
         message: ''
     });
 
-    const [formStatus, setFormStatus] = useState({
-        submitting: false,
-        submitted: false,
-        error: null
-    });
-
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        setFormStatus({ submitting: true, submitted: false, error: null });
-
-        try {
-            // Here you would typically make an API call to your backend
-            // For now, we'll just simulate a successful submission
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            setFormStatus({ submitting: false, submitted: true, error: null });
-            setFormData({ name: '', email: '', message: '' });
-        } catch (error) {
-            setFormStatus({ submitting: false, submitted: false, error: 'Failed to send message. Please try again.' });
-        }
+        // Here you would typically handle the form submission
+        console.log('Form submitted:', formData);
+        // Reset form
+        setFormData({
+            name: '',
+            email: '',
+            subject: '',
+            message: ''
+        });
+        alert('Thank you for your message! I will get back to you soon.');
     };
 
     return (
         <section className="contact" id="contact">
             <div className="container">
-                <h2 className="section-title">Get In Touch</h2>
+                <h2 className="section-title">Contact Me</h2>
                 <div className="contact-content">
-                    {formStatus.submitted ? (
-                        <div className="success-message">
-                            <h3>Thank you for your message!</h3>
-                            <p>I'll get back to you as soon as possible.</p>
+                    <div className="contact-info">
+                        <h3>Get in Touch</h3>
+                        <p>Feel free to reach out if you're looking for a developer, have a question, or just want to connect.</p>
+                        <div className="contact-details">
+                            <p><strong>Email:</strong> your.email@example.com</p>
+                            <p><strong>Location:</strong> Your Location</p>
                         </div>
-                    ) : (
-                        <form className="contact-form" onSubmit={handleSubmit}>
+                    </div>
+                    <form className="contact-form" onSubmit={handleSubmit}>
+                        <div className="form-group">
                             <input
                                 type="text"
                                 name="name"
-                                placeholder="Your Name"
                                 value={formData.name}
                                 onChange={handleChange}
+                                placeholder="Your Name"
                                 required
-                                disabled={formStatus.submitting}
                             />
+                        </div>
+                        <div className="form-group">
                             <input
                                 type="email"
                                 name="email"
-                                placeholder="Your Email"
                                 value={formData.email}
                                 onChange={handleChange}
+                                placeholder="Your Email"
                                 required
-                                disabled={formStatus.submitting}
                             />
+                        </div>
+                        <div className="form-group">
+                            <input
+                                type="text"
+                                name="subject"
+                                value={formData.subject}
+                                onChange={handleChange}
+                                placeholder="Subject"
+                                required
+                            />
+                        </div>
+                        <div className="form-group">
                             <textarea
                                 name="message"
-                                placeholder="Your Message"
                                 value={formData.message}
                                 onChange={handleChange}
+                                placeholder="Your Message"
                                 required
-                                disabled={formStatus.submitting}
-                            />
-                            {formStatus.error && (
-                                <div className="error-message">{formStatus.error}</div>
-                            )}
-                            <button
-                                type="submit"
-                                className="btn primary"
-                                disabled={formStatus.submitting}
-                            >
-                                {formStatus.submitting ? 'Sending...' : 'Send Message'}
-                            </button>
-                        </form>
-                    )}
+                            ></textarea>
+                        </div>
+                        <button type="submit" className="btn primary">Send Message</button>
+                    </form>
                 </div>
             </div>
         </section>
